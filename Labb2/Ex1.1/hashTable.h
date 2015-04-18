@@ -9,7 +9,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
-#include "item.h"
+#include "Item.h"
 
 #include <iostream>
 
