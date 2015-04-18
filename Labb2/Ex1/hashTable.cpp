@@ -92,7 +92,6 @@ int HashTable::find(string key) const
 // IMPLEMENT
 void HashTable::insert(string key, int v)
 {
-
     if(loadFactor()+1 >= MAX_LOAD_FACTOR)
     {
         reHash();

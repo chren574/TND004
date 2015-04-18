@@ -52,11 +52,11 @@ HashTable::HashTable(int table_size, HASH f)
 // IMPLEMENT
 HashTable::~HashTable()
 {
-
     for(int i = 0; i < size; i++)
     {
         delete hTable[i];
     }
+    
     delete hTable;
 }
 
@@ -92,12 +92,7 @@ int HashTable::find(string key) const
 // IMPLEMENT
 void HashTable::insert(string key, int v)
 {
-
-    // TO_DO: Re-hash
-    //cout << "inside insert" << endl;
-
-
-    if( double(nItems)/size >= MAX_LOAD_FACTOR)
+    if(loadFactor()+1 >= MAX_LOAD_FACTOR)
     {
         reHash();
     }
@@ -120,20 +115,18 @@ void HashTable::insert(string key, int v)
                 }
             }
             hTable[index] = new Item(key, 1);
+            nItems++;
         }
         else
         {
             hTable[index]->value = v;
         }
-
-
     }
     else
     {
         hTable[index] = new Item(key,1);
         nItems++;
     }
-
 }
 
 
@@ -146,7 +139,7 @@ bool HashTable::remove(string key)
     unsigned int index = h(key, size);
     if(hTable[index] != nullptr)
     {
-        hTable[index]->value = NOT_FOUND;
+        hTable[index] = new Item("",NOT_FOUND);
         nItems--;
         return true;
     }
@@ -195,6 +188,8 @@ ostream& operator<<(ostream& os, const HashTable& T)
 // IMPLEMENT
 void HashTable::reHash()
 {
+	cout << "Rehashing...";
+
     HashTable newHash(nextPrime(2*size), h);
 
     for(int i = 0; i < size; i++)
@@ -208,5 +203,4 @@ void HashTable::reHash()
     std::swap(hTable, newHash.hTable);
     std::swap(size, newHash.size);
     std::swap(nItems, newHash.nItems);
-
 }
