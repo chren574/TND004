@@ -102,6 +102,10 @@ public:
     // IMPLEMENT
     void insert(string key, int v = 0);
 
+    const int getNumberofWords();
+
+    const int getnItems() {return nItems;}
+
 
     /** \brief Remove an item from the table
       *

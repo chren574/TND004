@@ -92,12 +92,7 @@ int HashTable::find(string key) const
 // IMPLEMENT
 void HashTable::insert(string key, int v)
 {
-    if( (loadFactor()) >= MAX_LOAD_FACTOR)    
-    {
-        reHash();
-    }
-
-    unsigned int index = h(key, size);
+    int index = h(key, size);
 
     if(hTable[index] != nullptr)
     {
@@ -105,7 +100,7 @@ void HashTable::insert(string key, int v)
         {
             while(hTable[index] != nullptr)
             {
-                if(index == size - 1)
+                if(index == (size - 1))
                 {
                     index = 0;
                 }
@@ -114,18 +109,23 @@ void HashTable::insert(string key, int v)
                     index++;
                 }
             }
-            hTable[index] = new Item(key, 1);
+            hTable[index] = new Item(key, v);
             nItems++;
         }
         else
         {
-            hTable[index]->value = v;
+            hTable[index]->value += v;
         }
     }
     else
     {
-        hTable[index] = new Item(key, 1);
+        hTable[index] = new Item(key, v);
         nItems++;
+    }
+
+    if( (loadFactor()) >= MAX_LOAD_FACTOR)
+    {
+        reHash();
     }
 }
 
@@ -196,7 +196,7 @@ void HashTable::reHash()
     {
         if(hTable[i] != nullptr && hTable[i]->value == 1)
         {
-            newHash.insert(hTable[i]->key, 1);
+            newHash.insert(hTable[i]->key, hTable[i]->value);
         }
     }
 

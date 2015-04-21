@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <iomanip>
+#include <string>
 
 #include "hashTable.h"
 
@@ -85,6 +86,22 @@ int HashTable::find(string key) const
     }
 }
 
+const int HashTable::getNumberofWords()
+{
+
+    int sum = 0;
+
+    for(int i = 0; i < size; i++)
+    {
+        if(hTable[i] != nullptr && hTable[i]->value != NOT_FOUND)
+        {
+            sum += hTable[i]->value; 
+        }
+    }
+
+    return sum;
+}
+
 
 //Insert the Item (key, v) in the table
 //If key already exists in the table then change the associated value to v
@@ -92,12 +109,8 @@ int HashTable::find(string key) const
 // IMPLEMENT
 void HashTable::insert(string key, int v)
 {
-    if( (loadFactor()) >= MAX_LOAD_FACTOR)
-    {
-        reHash();
-    }
-
-    unsigned int index = h(key, size);
+    
+    int index = h(key, size);
 
     if(hTable[index] != nullptr)
     {
@@ -105,7 +118,7 @@ void HashTable::insert(string key, int v)
         {
             while(hTable[index] != nullptr)
             {
-                if(index == size - 1)
+                if(index == (size - 1))
                 {
                     index = 0;
                 }
@@ -114,19 +127,25 @@ void HashTable::insert(string key, int v)
                     index++;
                 }
             }
-            hTable[index] = new Item(key, 1);
+            hTable[index] = new Item(key, v);
             nItems++;
         }
         else
         {
-            hTable[index]->value = v;
+            hTable[index]->value += v;
         }
     }
     else
     {
-        hTable[index] = new Item(key, 1);
+        hTable[index] = new Item(key, v);
         nItems++;
     }
+
+    if( (loadFactor()) >= MAX_LOAD_FACTOR)
+    {
+        reHash();
+    }
+
 }
 
 
@@ -136,7 +155,7 @@ void HashTable::insert(string key, int v)
 // IMPLEMENT
 bool HashTable::remove(string key)
 {
-    unsigned int index = h(key, size);
+    int index = h(key, size);
     if(hTable[index] != nullptr)
     {
         hTable[index] = new Item("",NOT_FOUND);
@@ -147,6 +166,7 @@ bool HashTable::remove(string key)
     return false;
 }
 
+
 void HashTable::display(ostream& os)
 {
     if (!hTable) return;
@@ -155,19 +175,12 @@ void HashTable::display(ostream& os)
 
     for (int i = 0; i < size; ++i)
     {
-        os << setw(6) << i << ": ";
 
-        if (!hTable[i])
-        {
-            os << "null" << endl;
-        }
-        else
+        if (hTable[i])
         {
             string key = hTable[i]->key;
 
-            os << "key = " << "\"" << key << "\""
-               << setw(12) << "value = " << hTable[i]->value
-               << "  (" << h(key,size) << ")" << endl;
+            os << "key = " << key << setw(20 - key.length()) << "value = " << hTable[i]->value << endl;
         }
     }
 
@@ -217,15 +230,13 @@ const int& HashTable::operator[] (const string& key)
 // IMPLEMENT
 void HashTable::reHash()
 {
-	cout << "Rehashing...";
-
     HashTable newHash(nextPrime(2*size), h);
 
     for(int i = 0; i < size; i++)
     {
-        if(hTable[i] != nullptr && hTable[i]->value == 1)
+        if(hTable[i] != nullptr && hTable[i]->value != NOT_FOUND)
         {
-            newHash.insert(hTable[i]->key, 1);
+            newHash.insert(hTable[i]->key, hTable[i]->value);
         }
     }
 

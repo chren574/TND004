@@ -6,7 +6,9 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <algorithm>
 
 #include "hashTable.h"
 
@@ -26,104 +28,59 @@ unsigned my_hash(string s, int tableSize)
 }
 
 
-//Test the code
-int menu()
+bool ignoreChar(char c)
 {
-    int choice = 0;
-
-    cout << "\n-------------------------" << endl;
-    cout << "Operations on Hash Table" << endl;
-    cout << "\n-------------------------" << endl;
-
-    cout << "1. Insert " << endl;
-    cout << "2. Search" << endl;
-    cout << "3. Delete" << endl;
-    cout << "4. Dump table" << endl;
-    cout << "5. find" << endl;
-    cout << "6. Exit" << endl;
-
-    cout << "Enter your choice: ";
-
-    cin >> choice;
-
-    return choice;
+    switch(c)
+    {
+    case '.':
+    case ',':
+    case '!':
+    case '?':
+    case ':':
+    case '"':
+    case '(':
+    case ')':
+    case ';':
+    case '\\':
+        return true;
+    default:
+        return false;
+    }
 }
-
 
 int main()
 {
+    
+    string key;
     const int TABLE_SIZE = 7;
 
     HashTable table(TABLE_SIZE, my_hash);
 
-    string key;
-    int value = 0;
+    ifstream in;
+    in.open("files/test_file1.txt");
 
-    int choice;
-    bool go = true;
 
-    while( go )
-
+    if(in.is_open())
     {
-        choice = menu();
-
-        switch(choice)
+        while(!in.eof())
         {
-        case 1:
-
-            cout << "Enter value to be inserted: ";
-            cin >> value;
-
-            cout << "Enter key for the value to be inserted: ";
-            cin >> key;
-
-            table.insert(key, value);
-            break;
-
-        case 2:
-
-            cout << "Enter key of the value to be searched: ";
-            cin >> key;
-
-            value = table.find(key);
-
-            if (value == NOT_FOUND)
-            {
-                cout << "No element found at key " << key << endl;
+            in >> key;
+            transform(key.begin(), key.end(), key.begin(), ::tolower);
+            key.erase(std::remove_if(key.begin(), key.end(), &ignoreChar), key.end());
+            if(key == "power" || key == "biggest"){
+            cout << key << endl;
             }
-            else
-            {
-                cout << "value at key " << key << ": ";
-                cout << value << endl;
-            }
-            break;
-
-        case 3:
-            cout << "Enter key of the value to be deleted: ";
-            cin >> key;
-
-            table.remove(key);
-            break;
-
-        case 4:
-            table.display(cout);
-            break;
-
-        case 5:
-            cout << "Enter key for the value to be inserted: ";
-            cin >> key;
-
-            cout << table[key]; 
-            break;    
-
-        case 6:
-            go = false;
-            break;
-
-        default:
-            cout << "\nEnter correct option\n";
+            table.insert(key, 1);
         }
     }
+    in.close();
+
+    cout << "Number of words in the file = " << table.getNumberofWords() << endl;
+    cout << "Number of uniqe words in this file = " << table.getnItems() << endl << endl;
+    cout << "Frequency table ..."  << endl << endl;
+    table.display(cout);
+
+
 
     return 0;
 }
