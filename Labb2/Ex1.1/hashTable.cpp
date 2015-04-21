@@ -185,23 +185,30 @@ ostream& operator<<(ostream& os, const HashTable& T)
 const int& HashTable::operator[] (const string& key)
 {
 	int index = h(key, size);
+    cout << "index = " << index << endl << "size = "  << size << endl;
 
 	if(hTable[index] == nullptr)
 	{
 		return NOT_FOUND;
 	}
 
-	for(int i = index; i < size; i++)
-	{
-		if(hTable[i]->key == key)
-		{
-			return hTable[i]->value;
-		}
-		else if(hTable[i] == nullptr)
-		{
-			return NOT_FOUND;
-		}
-	}
+	while(hTable[index] != nullptr)
+    {
+        if(hTable[index]->key == key)
+        {
+            return hTable[index]->value;
+        }
+
+        else if(index == (size - 1))
+        {
+            index = 0;
+        }
+        else
+        {
+            index++;
+        }
+    }
+    return NOT_FOUND;
 }
 
 //Private member functions

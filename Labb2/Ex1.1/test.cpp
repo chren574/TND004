@@ -110,6 +110,9 @@ int main()
             break;
 
         case 5:
+            cout << "Enter key for the value to be inserted: ";
+            cin >> key;
+
             cout << table[key]; 
             break;    
 
