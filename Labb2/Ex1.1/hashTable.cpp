@@ -182,6 +182,28 @@ ostream& operator<<(ostream& os, const HashTable& T)
     return os;
 }
 
+int& HashTable::operator[] (const string key)
+{
+	int index = h(key, size);
+
+	if(hTable[index] == nullptr)
+	{
+		return NOT_FOUND;
+	}
+
+	for(int i = index; i < size; i++)
+	{
+		if(hTable[i] == key)
+		{
+			return hTable[i]->value;
+		}
+		else if(hTable[i] == nullptr)
+		{
+			return NOT_FOUND;
+		}
+	}
+}
+
 //Private member functions
 
 //Rehashing function

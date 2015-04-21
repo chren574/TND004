@@ -116,6 +116,9 @@ public:
     // IMPLEMENT
     bool remove(string key);
 
+    //Finds the value of the key, if it exists
+    int& operator[] (const string& key);
+
 
     /** \brief Display all items in the table T
       *
