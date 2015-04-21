@@ -56,7 +56,7 @@ HashTable::~HashTable()
     {
         delete hTable[i];
     }
-    
+
     delete hTable;
 }
 
@@ -92,7 +92,7 @@ int HashTable::find(string key) const
 // IMPLEMENT
 void HashTable::insert(string key, int v)
 {
-    if( (loadFactor()) >= MAX_LOAD_FACTOR)    
+    if( (loadFactor()) >= MAX_LOAD_FACTOR)
     {
         reHash();
     }
@@ -182,7 +182,7 @@ ostream& operator<<(ostream& os, const HashTable& T)
     return os;
 }
 
-int& HashTable::operator[] (const string key)
+const int& HashTable::operator[] (const string& key)
 {
 	int index = h(key, size);
 
@@ -193,7 +193,7 @@ int& HashTable::operator[] (const string key)
 
 	for(int i = index; i < size; i++)
 	{
-		if(hTable[i] == key)
+		if(hTable[i]->key == key)
 		{
 			return hTable[i]->value;
 		}
