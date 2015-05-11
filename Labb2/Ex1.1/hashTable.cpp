@@ -74,6 +74,9 @@ double HashTable::loadFactor() const
 // IMPLEMENT
 int HashTable::find(string key) const
 {
+	// FEL
+	// Den ska loppa igenom ifall den inte ligger på första platsen
+	// Använd den sedan i insert.
 
     unsigned int index = h(key, size);
     if(hTable[index]->key == key)
@@ -109,6 +112,10 @@ const int HashTable::getNumberofWords()
 // IMPLEMENT
 void HashTable::insert(string key, int v)
 {
+
+	//FEL
+	//Använd find och öka inte värdet.
+
     
     int index = h(key, size);
 
@@ -155,6 +162,10 @@ void HashTable::insert(string key, int v)
 // IMPLEMENT
 bool HashTable::remove(string key)
 {
+
+	//FEL
+    // Använd find
+
     int index = h(key, size);
     if(hTable[index] != nullptr)
     {
@@ -195,13 +206,18 @@ ostream& operator<<(ostream& os, const HashTable& T)
     return os;
 }
 
-const int& HashTable::operator[] (const string& key)
+int HashTable::operator[] (const string& key)
 {
+
+	// FEL
+	// Använd insert, find, retunera value
+
 	int index = h(key, size);
     cout << "index = " << index << endl << "size = "  << size << endl;
 
 	if(hTable[index] == nullptr)
 	{
+		//insert(key, 0);
 		return NOT_FOUND;
 	}
 
