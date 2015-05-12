@@ -22,7 +22,15 @@ Node::Node(ELEMENT v, Node *l, Node *r)
 //recursively deletes the nodes in the left_subtree and right-subtree
 Node::~Node()
 {
-    //ADD CODE
+    // Recursive deletion of nodes. If the node have children, remove them.
+    if(!l_thread)
+    {
+        delete left;
+    }
+    if(!r_thread)
+    {
+        delete right;
+    }
 }
 
 
@@ -52,50 +60,73 @@ bool Node::insert(ELEMENT v)
         }
     }
 
-    if(stoi(v.first) < stoi(value.first)){
+    if(stoi(v.first) < stoi(value.first))
+    {
         // Pekar på fel sätt
 
-        if(left == root){
+        if(left == root)
+        {
             left = new Node(v, root, this);
             left->l_thread = true;
             l_thread = false;
         }
-        if(right == root){
+        if(right == root)
+        {
             right = new Node(v, this, root);
             right->r_thread = true;
             r_thread = false;
         }
 
         left = new Node(v, this, this);
-    }else{
+    }
+    else
+    {
         // Pekar på fel sätt
         right = new Node(v, this, this);
     }
 
-    return true;
-*/
-/*
-    // iterative version
-    Node* temp = this;
+    // Marcus' new recursive version
 
-    while(!temp->l_thread || !temp->r_thread)
+    if(stoi(v.first) < stoi(value.first))
     {
-        if(stoi(v.first) < stoi(temp->value.first) )
+        // if no child at left -> make babies here
+        if(l_thread)
         {
-            temp = temp->left;
-        }
-        else if(stoi(v.first) > stoi(temp->value.first))
-        {
-            temp = temp->right;
+            left = new Node(v,root,this);
+            l_thread = false;
+
+            left->r_thread = true;
+            left->l_thread = true;
         }
         else
         {
-            // found same key -> do not insert
-            return false;
+            //if there is a left child -> insert to the child
+            insert(left);
         }
     }
-    */
+    else if(stoi(v.first) > stoi(value.first))
+    {
+        // if there is no child to the right
+        if(r_thread)
+        {
+            right = new Node(v,this,root);
+            r_thread = false;
 
+            right->l_thread = true;
+            right->r_thread = true;
+        }
+        else
+        {
+            insert(right);
+        }
+    }
+    else
+    {
+        // if v.first == value.first
+        value.second++;
+    }
+
+    return true;
 }
 
 //Remove the key from the tree having as root this node
@@ -134,7 +165,35 @@ void Node::removeMe(Node* parent, bool isRight)
 Node* Node::find(string key)
 {
     //ADD CODE
-    return nullptr;
+
+    // Marcus's recursive
+
+    if(stoi(key) < stoi(value.first))
+    {
+        if(!l_thread)
+        {
+            find(left);
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+    else if(stoi(key) < stoi(value.first))
+    {
+        if(!r_thread)
+        {
+            find(right);
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+
+    // else
+    // stoi(key) == stoi(value.first) -> found it
+    return this;
 }
 
 
@@ -142,8 +201,14 @@ Node* Node::find(string key)
 //of the tree whose root is this node
 Node* Node::findMin()
 {
-    //ADD CODE
-    return nullptr;
+    // Marcus' iterative traversal
+
+    Node* temp = this;
+
+    while(!temp->l_thread){
+        temp = temp->left;
+    }
+    return temp;
 }
 
 
@@ -151,8 +216,14 @@ Node* Node::findMin()
 //of the tree whose root is this node
 Node* Node::findMax()
 {
-    //ADD CODE
-    return nullptr;
+    // Marcus' iterative version
+
+    Node* temp = this;
+
+    while(!temp->r_thread){
+        temp = temp->right;
+    }
+    return temp;
 }
 
 
