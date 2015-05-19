@@ -79,6 +79,7 @@ BiIterator BiIterator::operator++(int)
 BiIterator& BiIterator::operator--()
 {
   if(!current->l_thread){
+      //current = current->left->findMax();
       current = current->left->findMax();
     }else{
       current = current->left;
@@ -93,6 +94,7 @@ BiIterator BiIterator::operator--(int)
 
   if(!current->l_thread){
       current = current->left->findMax();
+      //current = current->left;
     }else{
       current = current->left;
     }

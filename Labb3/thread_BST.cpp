@@ -91,19 +91,31 @@ void BST_threaded::remove(string key)
 //then an ELEMENT (key,0) is inserted and a reference to it is returned
 ELEMENT& BST_threaded::operator[](string key)
 {
-    //ADD CODE
-    static ELEMENT e("", 0); //MUST remove this code
+    BiIterator result = find(key);
+    //cout << "Key is " << key << endl;
 
-    return e; //MUST remove this code
+    if(result == end() )
+    {
+        ELEMENT e(key,0);
+        insert(e);
+        return(e);
+    }
+    return *result;
 }
-
 
 //Find the node in the BST storing key
 //Return a BiIterator referring to the node storing the key, if the key is found.
 //Otherwise, return this->end().
 BiIterator BST_threaded::find(string key) const
 {
-    //ADD CODE
+    Node *temp = root->left->find(key);
+
+    if(temp != nullptr){
+        //cout << "!= nullptr" << endl;
+        BiIterator *bi = new BiIterator(temp);
+        return *bi;
+        //return BiIterator(temp);
+    }
     return end();
 }
 

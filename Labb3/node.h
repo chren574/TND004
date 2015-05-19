@@ -80,7 +80,7 @@ private:
     * \return true, if no node stores the key v.first. Otherwise, return false.
     *
     */
-    //Insert v in the tree having as root this node
+    //Insert v in the tree having root as this node
     //Return true, if v was inserted
     //Otherwise, return false --v already exists in the tree
     //IMPLEMENT

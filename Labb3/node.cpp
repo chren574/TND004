@@ -34,54 +34,60 @@ Node::~Node()
 }
 
 
-//Insert v in the tree having as root this node
+//Insert v in the tree having root as this node
 //Return true, if v was inserted
 //Otherwise, return false --v already exists in the tree
 bool Node::insert(ELEMENT v)
 {
-
-    // Marcus' new recursive version
+    //cout << "Node::insert\n"; 
 
     if(stoi(v.first) < stoi(value.first))
     {
         // if no child at left -> make babies here
         if(l_thread)
         {
-            left = new Node(v,root,this);
+            left = new Node(v,this->left,this);
             l_thread = false;
 
             left->r_thread = true;
             left->l_thread = true;
+
+            left->value.second = 1;
         }
         else
         {
             //if there is a left child -> insert to the child
-            insert(left);
+            left->insert(v);
         }
+
+        return true;
     }
     else if(stoi(v.first) > stoi(value.first))
     {
         // if there is no child to the right
         if(r_thread)
         {
-            right = new Node(v,this,root);
+            right = new Node(v,this,this->right);
             r_thread = false;
 
             right->l_thread = true;
             right->r_thread = true;
+
+            right->value.second = 1;
         }
         else
         {
-            insert(right);
+            right->insert(v);
         }
+
+        return true;
     }
     else
     {
         // if v.first == value.first
         value.second++;
+        return false;
     }
-
-    return true;
 }
 
 //Remove the key from the tree having as root this node
@@ -119,32 +125,30 @@ void Node::removeMe(Node* parent, bool isRight)
 //If there is no node storing key then return nullptr
 Node* Node::find(string key)
 {
+    //cout << "Key is " << key << endl; 
     if(stoi(key) < stoi(value.first))
     {
-        if(!l_thread)
+        if(l_thread)
         {
-            find(left);
+            return nullptr; 
         }
         else
         {
-            return nullptr;
+            return left->find(key);
         }
     }
-    else if(stoi(key) < stoi(value.first))
+    else if(stoi(key) > stoi(value.first))
     {
-        if(!r_thread)
-        {
-            find(right);
-        }
-        else
+        if(r_thread)
         {
             return nullptr;
         }
+        else
+        {
+            return right->find(key);
+        }
     }
-
-    // else
-    // stoi(key) == stoi(value.first) -> found it
-    return this;
+      return this;
 }
 
 
@@ -171,7 +175,7 @@ Node* Node::findMax()
 
     Node* temp = this;
 
-    if(this == root){
+    if(l_thread || r_thread){
         temp = temp->left;
     }
 
