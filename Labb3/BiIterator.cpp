@@ -25,28 +25,28 @@ BiIterator::BiIterator(Node *ptr)
 //Dereferencing operator
 ELEMENT& BiIterator::operator*() const
 {
-    return current->value&;
+    return current->value;
 }
 
 
 //Member access operator
 ELEMENT* BiIterator::operator->() const
 {
-    return current->value;
+    return &current->value;
 }
 
 
 //Equality comparison operator
 bool BiIterator::operator==(const BiIterator &it) const
 {
-    return this->() == it->();
+    return (current == it.current);
 }
 
 
 //Inequality comparison operator
 bool BiIterator::operator!=(const BiIterator &it) const
 {
-    return !(this->() == it->());
+    return (current != it.current);
 }
 
 
@@ -56,7 +56,7 @@ BiIterator& BiIterator::operator++()
     if(!current->r_thread){
       current = current->right->findMin();
     }else{
-      current = current->right;  
+      current = current->right;
     }
     return *this;
 }
@@ -70,9 +70,9 @@ BiIterator BiIterator::operator++(int)
   if(!current->r_thread){
       current = current->right->findMin();
     }else{
-      current = current->right;  
+      current = current->right;
     }
-    return pos;
+    return *pos;
 }
 
 //Pre decrement operator
@@ -81,7 +81,7 @@ BiIterator& BiIterator::operator--()
   if(!current->l_thread){
       current = current->left->findMax();
     }else{
-      current = current->left;  
+      current = current->left;
     }
     return *this;
 }
@@ -94,9 +94,9 @@ BiIterator BiIterator::operator--(int)
   if(!current->l_thread){
       current = current->left->findMax();
     }else{
-      current = current->left;  
+      current = current->left;
     }
-    return pos;
+    return *pos;
 }
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
