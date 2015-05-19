@@ -25,62 +25,78 @@ BiIterator::BiIterator(Node *ptr)
 //Dereferencing operator
 ELEMENT& BiIterator::operator*() const
 {
-    //ADD CODE
+    return current->value&;
 }
 
 
 //Member access operator
 ELEMENT* BiIterator::operator->() const
 {
-    //ADD CODE
-    return nullptr;
+    return current->value;
 }
 
 
 //Equality comparison operator
 bool BiIterator::operator==(const BiIterator &it) const
 {
-    //ADD CODE
-    return false;
+    return this->() == it->();
 }
 
 
 //Inequality comparison operator
 bool BiIterator::operator!=(const BiIterator &it) const
 {
-   //ADD CODE
-    return false;
+    return !(this->() == it->());
 }
 
 
 //Pre increment operator
 BiIterator& BiIterator::operator++()
 {
-   //ADD CODE
+    if(!current->r_thread){
+      current = current->right->findMin();
+    }else{
+      current = current->right;  
+    }
     return *this;
 }
-
 
 
 //Pos increment operator: see page 277 and 278 of C++ direkt
 BiIterator BiIterator::operator++(int)
 {
-   //ADD CODE
-    return *this;
+  BiIterator *pos = this;
+
+  if(!current->r_thread){
+      current = current->right->findMin();
+    }else{
+      current = current->right;  
+    }
+    return pos;
 }
 
 //Pre decrement operator
 BiIterator& BiIterator::operator--()
 {
-   //ADD CODE
+  if(!current->l_thread){
+      current = current->left->findMax();
+    }else{
+      current = current->left;  
+    }
     return *this;
 }
 
 //Pos decrement operator
 BiIterator BiIterator::operator--(int)
 {
-   //ADD CODE
-    return *this;
+  BiIterator *pos = this;
+
+  if(!current->l_thread){
+      current = current->left->findMax();
+    }else{
+      current = current->left;  
+    }
+    return pos;
 }
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

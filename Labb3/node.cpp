@@ -39,51 +39,6 @@ Node::~Node()
 //Otherwise, return false --v already exists in the tree
 bool Node::insert(ELEMENT v)
 {
-    if(!l_thread || !r_thread)
-    {
-
-        if(stoi(v.first) < stoi(value.first) )
-        {
-            left->insert(v);
-
-        }
-        else if(stoi(v.first) > stoi(value.first))
-        {
-            right->insert(v);
-
-        }
-        else
-        {
-            // found same key -> do not insert
-            value->second++;
-            return false;
-        }
-    }
-
-    if(stoi(v.first) < stoi(value.first))
-    {
-        // Pekar på fel sätt
-
-        if(left == root)
-        {
-            left = new Node(v, root, this);
-            left->l_thread = true;
-            l_thread = false;
-        }
-        if(right == root)
-        {
-            right = new Node(v, this, root);
-            right->r_thread = true;
-            r_thread = false;
-        }
-
-        left = new Node(v, this, this);
-    }
-    else
-    {
-        // Pekar på fel sätt
-        right = new Node(v, this, this);
-    }
 
     // Marcus' new recursive version
 
@@ -164,10 +119,6 @@ void Node::removeMe(Node* parent, bool isRight)
 //If there is no node storing key then return nullptr
 Node* Node::find(string key)
 {
-    //ADD CODE
-
-    // Marcus's recursive
-
     if(stoi(key) < stoi(value.first))
     {
         if(!l_thread)
@@ -219,6 +170,10 @@ Node* Node::findMax()
     // Marcus' iterative version
 
     Node* temp = this;
+
+    if(this == root){
+        temp = temp->left;
+    }
 
     while(!temp->r_thread){
         temp = temp->right;

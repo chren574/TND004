@@ -20,7 +20,7 @@ using namespace std;
 BST_threaded::BST_threaded()
  : counter(0)
 {
-    root = new Node(make_pair("", 0), root, root);
+    root = new Node(make_pair("", NULL), root, root);
 }
 
 
@@ -50,12 +50,7 @@ void BST_threaded::clear(Node *ptr)
 //Test if the tree is empty
 bool BST_threaded::empty() const
 {
-    if(!(root->left || root->right))
-    {
-        return true;    
-    }
-    return false;
-    
+    return (counter == 0);   
 }
 
 //Return mumber of keys (elements) stored in the tree
@@ -116,8 +111,10 @@ BiIterator BST_threaded::find(string key) const
 //Return an iterator referring to the first node in the inorder traversal of the BST
 BiIterator BST_threaded::begin() const
 {
-    //ADD CODE
-    return end();
+    if(empty()){
+        return end();
+    }
+    return root->findMin();
 }
 
 
