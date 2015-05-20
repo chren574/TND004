@@ -26,26 +26,10 @@ BST_threaded::BST_threaded()
 
 //destructor
 BST_threaded::~BST_threaded()
-{/*
-    clear(root);*/
-}
-/*
-void BST_threaded::clear(Node *ptr)
 {
-    Node *rm = ptr;
-
-    if(rm->left)
-    {
-        clear(rm->left);
-    }
-    if(rm->right)
-    {
-        clear(rm->right);
-    }
-    delete rm;
-    counter--;
+    delete root;
 }
-*/
+
 
 //Test if the tree is empty
 bool BST_threaded::empty() const
@@ -96,7 +80,7 @@ ELEMENT& BST_threaded::operator[](string key)
 
     if(result == end() )
     {
-        ELEMENT e(key,0);
+        static ELEMENT e(key,0);
         insert(e);
         return(e);
     }

@@ -52,7 +52,6 @@ bool Node::insert(ELEMENT v)
             left->r_thread = true;
             left->l_thread = true;
 
-            //left->value.second = 1;
         }
         else
         {
@@ -98,7 +97,7 @@ bool Node::insert(ELEMENT v)
 bool Node::remove(string key, Node* parent, bool isRight)
 {
 
-    cout << "remove" << endl;
+    //cout << "remove" << endl;
 
     if(key < value.first)
     {
@@ -129,24 +128,28 @@ bool Node::remove(string key, Node* parent, bool isRight)
         //has two children
         if(!l_thread && !r_thread)
         {
+        	/*
             Node* m = this->left->findMax();
             swap(value,m->value);
             removeMe(m->left,true);
+            */
+            value = right->findMin()->value;
+            return right->remove(value.first, this, true);
         }
 
         //has one child
         else
         {
             removeMe(parent,isRight);
+            return true;
         }
 
-        return true;
+        
     }
-    else
-    {
+   
         // not found
-        return false;
-    }
+    	return false;
+    
 }
 
 
@@ -163,6 +166,7 @@ bool Node::remove(string key, Node* parent, bool isRight)
 //2c: a right child with no children
 void Node::removeMe(Node* parent, bool isRight)
 {
+	
     if(!isRight)
     {
         //1a: a left child with only a right child
@@ -215,6 +219,80 @@ void Node::removeMe(Node* parent, bool isRight)
     delete this;
 
     cout << "removeMe" << endl;
+    
+/*
+        if(l_thread && r_thread){
+
+        //2c: a right child with no children
+        if(isRight){
+
+        //    std::cout << "Removing a right child with NO children" << std::endl;
+            parent->r_thread = true;
+            parent->right = this->right;
+        }
+
+        //1c: a left child with no children
+        else{
+        //    std::cout << "Removing a left child with  NO children" << std::endl;
+            parent->l_thread = true;
+            parent->left = this->left;
+        }
+
+    }
+
+    // Node has one child
+    else{
+        // Right child with only a left child
+        if(isRight && r_thread){
+
+            //std::cout << "Removing a right child with a left child";
+            parent->right = this->left;
+
+            // redirect the last "dummy thread" that were pointing at the node to remove, to point where the removed node was pointing
+            // I.e point at the removed nodes inorder successor
+            this->left->findMax()->right = this->right;
+
+        }
+        // Right child with only a right child
+        else if (isRight && l_thread){
+
+            //std::cout << "Removing a right child with a right child";
+            parent->right = this->right;
+            this->right->findMin()->left = this->left;
+
+        }
+
+        // Left child with only a left child
+        else if(!isRight && r_thread){
+
+            //std::cout << "Removing a left child with a left child";
+            parent->left = this->left;
+            this->left->findMax()->right = this->right;
+
+        }
+
+        // Left child with only a right child
+        else if (!isRight && l_thread){
+
+            //std::cout << "Removing a left child with a right child";
+            parent->left = this->right;
+            this->right->findMin()->left = this->left;
+
+        }
+
+        else{
+
+            std::cout << "Something is wrong in the removeMe function" << std::endl;
+
+        }
+
+        // Set flags to true to prevent recursive delete of the whole tree
+        l_thread = r_thread = true;
+        delete this;
+
+    }
+    */
+
 }
 
 
