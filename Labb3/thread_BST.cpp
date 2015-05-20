@@ -50,7 +50,7 @@ void BST_threaded::clear(Node *ptr)
 //Test if the tree is empty
 bool BST_threaded::empty() const
 {
-    return (counter == 0);   
+    return (counter == 0);
 }
 
 //Return mumber of keys (elements) stored in the tree
@@ -80,7 +80,7 @@ void BST_threaded::insert(ELEMENT v)
 //Remove node with key from the tree
 void BST_threaded::remove(string key)
 {
-   //ADD CODE
+    root->left->remove(key, root, false);
 }
 
 

@@ -16,10 +16,10 @@
 
 // Constructor
 BiIterator::BiIterator(Node *ptr)
- : current(ptr)
- {
+    : current(ptr)
+{
 
- }
+}
 
 
 //Dereferencing operator
@@ -53,10 +53,13 @@ bool BiIterator::operator!=(const BiIterator &it) const
 //Pre increment operator
 BiIterator& BiIterator::operator++()
 {
-    if(!current->r_thread){
-      current = current->right->findMin();
-    }else{
-      current = current->right;
+    if(!current->r_thread)
+    {
+        current = current->right->findMin();
+    }
+    else
+    {
+        current = current->right;
     }
     return *this;
 }
@@ -65,12 +68,15 @@ BiIterator& BiIterator::operator++()
 //Pos increment operator: see page 277 and 278 of C++ direkt
 BiIterator BiIterator::operator++(int)
 {
-  BiIterator *pos = this;
+    BiIterator *pos = this;
 
-  if(!current->r_thread){
-      current = current->right->findMin();
-    }else{
-      current = current->right;
+    if(!current->r_thread)
+    {
+        current = current->right->findMin();
+    }
+    else
+    {
+        current = current->right;
     }
     return *pos;
 }
@@ -78,11 +84,14 @@ BiIterator BiIterator::operator++(int)
 //Pre decrement operator
 BiIterator& BiIterator::operator--()
 {
-  if(!current->l_thread){
-      //current = current->left->findMax();
-      current = current->left->findMax();
-    }else{
-      current = current->left;
+    if(!current->l_thread)
+    {
+        current = current->left->findMax();
+        //current = current->left->findMax();
+    }
+    else
+    {
+        current = current->left;
     }
     return *this;
 }
@@ -90,13 +99,16 @@ BiIterator& BiIterator::operator--()
 //Pos decrement operator
 BiIterator BiIterator::operator--(int)
 {
-  BiIterator *pos = this;
+    BiIterator *pos = this;
 
-  if(!current->l_thread){
-      current = current->left->findMax();
-      //current = current->left;
-    }else{
-      current = current->left;
+    if(!current->l_thread)
+    {
+        //current = current->left->findMax();
+        current = current->left;
+    }
+    else
+    {
+        current = current->left;
     }
     return *pos;
 }
