@@ -52,7 +52,6 @@ bool Node::insert(ELEMENT v)
             left->r_thread = true;
             left->l_thread = true;
 
-            //left->value.second = 1;
         }
         else
         {
@@ -72,8 +71,6 @@ bool Node::insert(ELEMENT v)
 
             right->l_thread = true;
             right->r_thread = true;
-
-            //right->value.second = 1;
         }
         else
         {
@@ -97,29 +94,18 @@ bool Node::insert(ELEMENT v)
 //isRight==true: this node is right child of parent
 bool Node::remove(string key, Node* parent, bool isRight)
 {
-
-    cout << "remove" << endl;
-
     if(key < value.first)
     {
-        if(l_thread)
+        if(!l_thread)
         {
-            return false;
-        }
-        else
-        {
-            left->remove(key,this,false);
+            return left->remove(key,this,false);
         }
     }
     else if(key > value.first)
     {
-        if(r_thread)
+        if(!r_thread)
         {
-            return false;
-        }
-        else
-        {
-            right->remove(key,this,true);
+            return right->remove(key,this,true);
         }
     }
     else if(key == value.first)
@@ -129,24 +115,19 @@ bool Node::remove(string key, Node* parent, bool isRight)
         //has two children
         if(!l_thread && !r_thread)
         {
-            Node* m = this->left->findMax();
-            swap(value,m->value);
-            removeMe(m->left,true);
+            value = right->findMin()->value;
+            return right->remove(value.first, this, true);
         }
 
-        //has one child
+        //has at most one child
         else
         {
             removeMe(parent,isRight);
+            return true;
         }
-
-        return true;
     }
-    else
-    {
         // not found
-        return false;
-    }
+    	return false;
 }
 
 
@@ -168,53 +149,51 @@ void Node::removeMe(Node* parent, bool isRight)
         //1a: a left child with only a right child
         if(l_thread && !r_thread)
         {
-            parent->left = this->right;
-            Node* m = this->right->findMin();
-            m->left = this->left;
-
-            //destroys everything
+            parent->left = right;
+            Node *m = right->findMin();
+            m->left = left;
         }
         //1b: a left child with only a left child
         else if(!l_thread && r_thread)
         {
-            parent->left = this->left;
-
+            parent->left = left;
+            Node* m = left->findMax();
+            m->right = parent;
         }
         else
         {
-            parent->left = this->left;
+            parent->left = left;
+            parent->l_thread = true;
         }
-
     }
     else
     {
         //1a: a right child with only a right child
         if(l_thread && !r_thread)
         {
-            parent->right = this->right;
-
+            parent->right = right;
+            Node *m = right->findMin();
+            m->left = parent;
         }
         //1b: a right child with only a left child
         else if(!l_thread && r_thread)
         {
-            parent->right = this->left;
-            Node* m = this->left->findMax();
-            m->right = this->right;
-
-
+            parent->right = left;
+            Node* m = left->findMax();
+            m->right = right;
         }
         else
         {
-            parent->right = this->right;
-
+            parent->right = right;
+            parent->r_thread = true;
         }
     }
 
     l_thread = true;
     r_thread = true;
-    delete this;
 
-    cout << "removeMe" << endl;
+
+    delete this;
 }
 
 
@@ -255,8 +234,6 @@ Node* Node::find(string key)
 //of the tree whose root is this node
 Node* Node::findMin()
 {
-    // Marcus' iterative traversal
-
     Node* temp = this;
 
     while(!temp->l_thread)
@@ -271,14 +248,7 @@ Node* Node::findMin()
 //of the tree whose root is this node
 Node* Node::findMax()
 {
-    // Marcus' iterative version
-
     Node* temp = this;
-
-    if(l_thread || r_thread)
-    {
-        temp = temp->left;
-    }
 
     while(!temp->r_thread)
     {

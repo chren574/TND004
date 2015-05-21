@@ -74,6 +74,9 @@ class BST_threaded
     int size() const;
 
 
+    int total() const;
+
+
     /** \brief Insert element v in the BST.
     *
     * \note If a node storing v.first already exists in the BST then the tree is not modified.

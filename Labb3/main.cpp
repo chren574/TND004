@@ -19,7 +19,25 @@
 
 using namespace std;
 
-
+bool isNotAlnum(char c)
+{
+    switch(c)
+    {
+    case '.':
+    case ',':
+    case '!':
+    case '?':
+    case ':':
+    case '"':
+    case '(':
+    case ')':
+    case ';':
+    case '\\':
+        return true;
+    default:
+        return false;
+    }
+}
 
 /*******************************
 * 2. Main function             *
@@ -31,6 +49,9 @@ int main()
     MAP table;
 
     string name;
+    string s;
+
+    int count = 0;
 
     /******************************************************
     * PHASE 0: Load the words in the text file            *
@@ -40,8 +61,8 @@ int main()
     cout << "File name? ";
     getline(cin, name);
 
-    ifstream textFile(name);
-
+    ifstream textFile;
+    textFile.open(name);
     if (!textFile)
     {
         cerr << "Text file could not be opened!!" << endl;
@@ -51,6 +72,7 @@ int main()
     cout << "Loading the words from " << name << " ...\n";
 
     //Read words and load them in the table
+
     while (textFile >> s)
     {
         //remove non-alphanumeric chars
@@ -65,6 +87,7 @@ int main()
 
         count++;
     }
+    textFile.close();
 
 
     /******************************************************
@@ -74,29 +97,82 @@ int main()
     * - frequency table                                   *
     *******************************************************/
 
-    //ADD CODE
+    cout << "Number of words in the file = " << table.total() << endl;
+    cout << "Number of unique words in this file = " << table.size() << endl << endl;
+    cout << "Frequency table sorted alphabetically..."  << endl << endl;
+    cout << setw(5) << "KEY" << setw(10) << "COUNTER" << endl;
+    cout <<  "====================================" << endl;
+
+    BiIterator it = table.begin();
+
+    for( ; it != table.end(); it++)
+    {
+        cout << setw(15) << it->first << setw(12) << it->second << endl;
+    }
 
 
     /******************************************************
-    * PHASE 3: remove all words with counter 1            *
+    * PHASE 2: remove all words with counter 1            *
     *          and display table again                    *
     *******************************************************/
 
-    string wait;
-    getline(cin, wait);
+    vector<string> toRemove;
 
-    //ADD CODE
+    it = table.begin();
 
+    for( ; it != table.end(); it++)
+    {
+        if(it->second == 1)
+        {
+            toRemove.push_back(it->first);
+        }
+    }
+
+    for(unsigned int i = 0; i < toRemove.size(); i++){
+        table.remove(toRemove.at(i));
+    }
+    toRemove.clear();
+
+    cout << "Number of words after remove: " << table.size() << endl << endl;
+
+    cout << "Frequency table sorted alphabetically..."  << endl << endl;
+
+    cout << setw(5) << "KEY" << setw(10) << "COUNTER" << endl;
+    cout <<  "====================================" << endl;
+
+    it = table.begin();
+
+    for( ; it != table.end(); it++)
+    {
+        cout << setw(15) << it->first << setw(12) << it->second << endl;
+    }
 
 
     /***********************************************************
-    * PHASE 4: request two words to the user w1 and w2         *
+    * PHASE 3: request two words to the user w1 and w2         *
     *          then display all words in the interval [w1,w2]  *
     ************************************************************/
 
-    //ADD CODE
 
+    cout << "Enter two words: " << endl;
+    string w1,w2;
 
+    cin >> w1;
+    cin >> w2;
+
+    BiIterator firstWord = table.find(w1);
+    BiIterator lastWord = table.find(w2);
+
+    cout << "Frequency table in [" << w1 << "," << w2 << "]" << endl << endl;
+    cout << setw(5) << "KEY" << setw(5) << "COUNTER" << endl;
+    cout <<  "====================================" << endl;
+
+    for(; firstWord != lastWord; firstWord++)
+    {
+        cout << setw(15) << firstWord->first << setw(12) << firstWord->second << endl;
+    }
+
+    cout << setw(15) << firstWord->first << setw(12) << firstWord->second << endl;
 
     return 0;
 }

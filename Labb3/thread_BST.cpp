@@ -18,34 +18,19 @@ using namespace std;
 //Empty tree has a dummy node as root
 //The real tree is stored as left child of the dummy root
 BST_threaded::BST_threaded()
- : counter(0)
+    : counter(0)
 {
     root = new Node(make_pair("", NULL), root, root);
+    root->l_thread = root->r_thread = true;
 }
 
 
 //destructor
 BST_threaded::~BST_threaded()
-{/*
-    clear(root);*/
-}
-/*
-void BST_threaded::clear(Node *ptr)
 {
-    Node *rm = ptr;
-
-    if(rm->left)
-    {
-        clear(rm->left);
-    }
-    if(rm->right)
-    {
-        clear(rm->right);
-    }
-    delete rm;
-    counter--;
+    delete root;
 }
-*/
+
 
 //Test if the tree is empty
 bool BST_threaded::empty() const
@@ -57,6 +42,18 @@ bool BST_threaded::empty() const
 int BST_threaded::size() const
 {
     return counter;
+}
+
+int BST_threaded::total() const
+{
+    int sum = 0;
+    BiIterator it = begin();
+
+   for( ; it != end(); it++)
+   {
+       sum += it->second;
+   }
+   return sum;
 }
 
 
@@ -80,7 +77,10 @@ void BST_threaded::insert(ELEMENT v)
 //Remove node with key from the tree
 void BST_threaded::remove(string key)
 {
-    root->left->remove(key, root, false);
+    if ( root->left->remove(key, root, false) )
+    {
+        counter--;
+    }
 }
 
 
@@ -92,13 +92,12 @@ void BST_threaded::remove(string key)
 ELEMENT& BST_threaded::operator[](string key)
 {
     BiIterator result = find(key);
-    //cout << "Key is " << key << endl;
 
     if(result == end() )
     {
         ELEMENT e(key,0);
         insert(e);
-        return(e);
+        return *find(key);
     }
     return *result;
 }
@@ -108,13 +107,15 @@ ELEMENT& BST_threaded::operator[](string key)
 //Otherwise, return this->end().
 BiIterator BST_threaded::find(string key) const
 {
+    if(empty() ){
+        return end();
+    }
     Node *temp = root->left->find(key);
 
-    if(temp != nullptr){
-        //cout << "!= nullptr" << endl;
+    if(temp != nullptr)
+    {
         BiIterator *bi = new BiIterator(temp);
         return *bi;
-        //return BiIterator(temp);
     }
     return end();
 }
@@ -123,14 +124,15 @@ BiIterator BST_threaded::find(string key) const
 //Return an iterator referring to the first node in the inorder traversal of the BST
 BiIterator BST_threaded::begin() const
 {
-    if(empty()){
+    if(empty())
+    {
         return end();
     }
     return root->findMin();
 }
 
 
- //Return a BiIterator referring to the past-the-end element in the BST
+//Return a BiIterator referring to the past-the-end element in the BST
 BiIterator BST_threaded::end() const
 {
     BiIterator it(root);
@@ -145,7 +147,7 @@ void BST_threaded::display() const
 {
     if (!empty())
         root->left->display();
-     else
+    else
         cout << "The container is empty!!" << endl;
 
 }

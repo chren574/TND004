@@ -7,7 +7,6 @@
 * Represents bidirectional iterators          *
 ***********************************************/
 
-
 #include "BiIterator.h"
 
 
@@ -87,7 +86,7 @@ BiIterator& BiIterator::operator--()
     if(!current->l_thread)
     {
         current = current->left->findMax();
-        //current = current->left->findMax();
+
     }
     else
     {
