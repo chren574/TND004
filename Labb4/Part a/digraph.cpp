@@ -79,7 +79,7 @@ void Digraph::uwsssp(int s)
         path[i] = 0;
         done[i] = false;
 
-        if(array[i].vertex == s)
+        if(array[i]->vertex == s)
         {
             index = i;
         }
@@ -98,11 +98,11 @@ void Digraph::uwsssp(int s)
         {
             if()
             {
-                dist(next.vertex) = dist(v) + 1;
-                path[next.vertex] = v;
-                Q.enqueue(next.vertex);
+                dist[next->vertex] = dist[v] + 1;
+                path[next->vertex] = v;
+                Q.enqueue(array[v]->vertex);
             }
-            next = next->getNext();
+            next = array[v].getNext();
         }
     }
 
