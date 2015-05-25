@@ -71,38 +71,34 @@ void Digraph::uwsssp(int s)
     // https://www.youtube.com/watch?v=XuCbpw6Bj1U - video om queues
 
     Queue<int> Q;
-    int index;
+    int v;
 
     for(int i = 0; i < size; i++)
     {
         dist[i] = INFINITY;
         path[i] = 0;
-        done[i] = false;
-
-        if(array[i].vertex == s)
-        {
-            index = i;
-        }
     }
 
-    Q.enqueue(array[i]);
+    dist[s] = 0;
+
+    Q.enqueue(s);
 
     while(!Q.isEmpty())
     {
-        int v = Q.getFront();
+        v = Q.getFront();
         Q.dequeue();
 
-        Node* next = array[v].getNext();
+        Node* current = array[v].getFirst();
 
-        while(next)
+        while(current)
         {
-            if()
+            if(dist[current->vertex] == INFINITY)
             {
-                dist(next.vertex) = dist(v) + 1;
-                path[next.vertex] = v;
-                Q.enqueue(next.vertex);
+                dist[current->vertex] = dist[v] + 1;
+                path[current->vertex] = v;
+                Q.enqueue(current->vertex);
             }
-            next = next->getNext();
+            current = array[v].getNext();
         }
     }
 
@@ -118,6 +114,54 @@ void Digraph::pwsssp(int s)
     }
 
     // *** TODO ***
+
+    for(int i = 0; i < size; i++)
+    {
+        dist[i] = INFINITY;
+        path[i] = 0;
+        done[i] = false;
+    }
+
+    dist[s] = 0;
+    done[s] = true;
+
+    int v = s;
+
+    while(true) 
+    {
+
+        Node* next = array[v].getFirst();
+
+        while(next)
+        {
+            if(!done[next->vertex] && dist[next->vertex] > dist[v] + next->weight)
+            {
+                dist[next->vertex] = dist[v] + next->weight;
+                path[next->vertex] = v;
+            }
+            next = array[v].getNext();
+        }
+
+        done[v] = true;
+
+        int smallest = INFINITY;
+
+        for(int i = 1; i <= size; i++)
+        {
+
+            if(dist[i] < smallest && !done[i])
+            {
+                smallest =  dist[i];
+                v = i;
+                std::cout << "smallest" << smallest << std::endl;
+
+            }
+            
+        }
+
+        if(smallest == INFINITY) { break; }
+    }
+
 }
 
 // print graph
@@ -157,8 +201,10 @@ void Digraph::printPath(int t) const
     if (t < 1 || t > size)
     {
          cout << "\nERROR: expected target t in range 1.." << size << " !" << endl;
+
          return;
     }
 
     // *** TODO ***
+
 }
