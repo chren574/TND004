@@ -77,6 +77,15 @@ void Digraph::uwsssp(int s)
     {
         dist[i] = INFINITY;
         path[i] = 0;
+<<<<<<< HEAD
+=======
+        done[i] = false;
+
+        if(array[i]->vertex == s)
+        {
+            index = i;
+        }
+>>>>>>> ba8c1eb1b607f2c0bb2f98e39c071d7e73a9d0c1
     }
 
     dist[s] = 0;
@@ -94,11 +103,19 @@ void Digraph::uwsssp(int s)
         {
             if(dist[current->vertex] == INFINITY)
             {
+<<<<<<< HEAD
                 dist[current->vertex] = dist[v] + 1;
                 path[current->vertex] = v;
                 Q.enqueue(current->vertex);
             }
             current = array[v].getNext();
+=======
+                dist[next->vertex] = dist[v] + 1;
+                path[next->vertex] = v;
+                Q.enqueue(array[v]->vertex);
+            }
+            next = array[v].getNext();
+>>>>>>> ba8c1eb1b607f2c0bb2f98e39c071d7e73a9d0c1
         }
     }
 
