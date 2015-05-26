@@ -208,12 +208,10 @@ void Digraph::printPath(int t) const
     }
 
     // *** TODO ***
-    int sum;
 
     // recussiv
     if(path[t] != 0)
     {
-        sum += calcPath(t);
         printPath(path[t]);
     }
 
