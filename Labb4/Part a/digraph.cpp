@@ -9,6 +9,10 @@
 #include <iomanip>
 #include <cassert>
 
+#include <vector>
+#include <iterator>
+
+
 using namespace std;
 
 #include "digraph.h"
@@ -73,19 +77,10 @@ void Digraph::uwsssp(int s)
     Queue<int> Q;
     int v;
 
-    for(int i = 0; i < size; i++)
+    for(int i = 1; i <= size; i++)
     {
         dist[i] = INFINITY;
         path[i] = 0;
-<<<<<<< HEAD
-=======
-        done[i] = false;
-
-        if(array[i]->vertex == s)
-        {
-            index = i;
-        }
->>>>>>> ba8c1eb1b607f2c0bb2f98e39c071d7e73a9d0c1
     }
 
     dist[s] = 0;
@@ -97,25 +92,17 @@ void Digraph::uwsssp(int s)
         v = Q.getFront();
         Q.dequeue();
 
-        Node* current = array[v].getFirst();
+        Node* next = array[v].getFirst();
 
-        while(current)
+        while(next)
         {
-            if(dist[current->vertex] == INFINITY)
+            if(dist[next->vertex] == INFINITY)
             {
-<<<<<<< HEAD
-                dist[current->vertex] = dist[v] + 1;
-                path[current->vertex] = v;
-                Q.enqueue(current->vertex);
-            }
-            current = array[v].getNext();
-=======
                 dist[next->vertex] = dist[v] + 1;
                 path[next->vertex] = v;
-                Q.enqueue(array[v]->vertex);
+                Q.enqueue(next->vertex);
             }
             next = array[v].getNext();
->>>>>>> ba8c1eb1b607f2c0bb2f98e39c071d7e73a9d0c1
         }
     }
 
@@ -132,7 +119,7 @@ void Digraph::pwsssp(int s)
 
     // *** TODO ***
 
-    for(int i = 0; i < size; i++)
+    for(int i = 1; i <= size; i++)
     {
         dist[i] = INFINITY;
         path[i] = 0;
@@ -170,8 +157,6 @@ void Digraph::pwsssp(int s)
             {
                 smallest =  dist[i];
                 v = i;
-                std::cout << "smallest" << smallest << std::endl;
-
             }
             
         }
@@ -223,5 +208,38 @@ void Digraph::printPath(int t) const
     }
 
     // *** TODO ***
+    int sum;
 
+    // recussiv
+    if(path[t] != 0)
+    {
+        sum += calcPath(t);
+        printPath(path[t]);
+    }
+
+    std::cout << t << setw(3); 
+
+    // Hur får ut distansen rekusivt?
+
+    // Iterativ
+    /*
+    std::vector<int> v;
+    vector<int>::iterator it;
+    int distance = 0;
+
+    while(path[t] != 0)
+    {
+        v.insert(it, path[t]);
+        distance += dist[t];
+        t++;
+        std::cout << "loop" << endl;
+    }
+    std::cout << "loooo" << endl;
+    for(it = v.begin(); it != v.end(); it++)
+    {
+        std::cout << *it << setw(3);
+    }
+
+    std::cout << "(" << distance << ")" << endl;
+    */
 }

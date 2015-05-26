@@ -114,8 +114,7 @@ BiIterator BST_threaded::find(string key) const
 
     if(temp != nullptr)
     {
-        BiIterator *bi = new BiIterator(temp);
-        return *bi;
+        return BiIterator(temp);
     }
     return end();
 }
