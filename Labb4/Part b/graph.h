@@ -35,7 +35,7 @@ public:
     // print graph
     void printGraph() const;
 
-    bool findInVisited(std::vector<int> V, int j);
+    //bool findInVisited(std::vector<int> V, int j);
 
 private:
     // -- DATA MEMBERS

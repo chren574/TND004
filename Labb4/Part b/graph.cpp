@@ -64,47 +64,79 @@ void Graph::mstPrim() const
 
     // *** TODO ***
 
-    int start = 1;
-    int distence = 0;
+    std::vector<Edge> edge;
 
-    std::vector<int> visited;
+    int* dist  = new int [size + 1];
+    int* path  = new int [size + 1];
+    bool* done  = new bool[size + 1];
 
-    visited.push_back(start);
+    for(int i = 1; i <= size; i++)
+    {
+        dist[i] = INFINITY;
+        path[i] = 0;
+        done[i] = false;
+    }
 
+    
 
-    for(int i = 0; i < size; i++)
-    {  
-        int shortest = INFINITY;
-        int index;
+    // Start position
+    int current = 1;
 
-        for(int j = 1; j <= size; j++)
+    dist[current] = 0;
+    done[current] = true;
+
+    while(true) 
+    {
+
+        Node* next = array[current].getFirst();
+
+        while(next)
         {
-            // edge j:s head == visitet(i)
-
-            Node *current = array[j].getFirst();
-
-            if(current->head != visited.at(i) && findInVisited(visited,j))
+            if(!done[next->vertex] && dist[next->vertex] > next->weight)
             {
-                if(current->weight < shortest){
-                    shortest = current->weight;
-                    index = j;
-                }
+                dist[next->vertex] = next->weight;
+                path[next->vertex] = current;
             }
+            next = array[current].getNext();
         }
-        distence += shortest;
-        visited.push_back(index);
+
+        done[current] = true;
+
+        edge.push_back(Edge(current, path[current], dist[current]));
+
+        int smallest = INFINITY;
+
+        for(int i = 1; i <= size; i++)
+        {
+
+            if(dist[i] < smallest && !done[i])
+            {
+                smallest =  dist[i];
+                current = i;
+            }
+            
+        }
+
+    
+        if(smallest == INFINITY) { break; }
+
 
     }
 
-    std::cout << "shortest distence is " << distence << endl;
-}
+    int distence = 0;
 
-bool Graph::findInVisited(std::vector<int> V, int j){
-    vector<int>::iterator it;
-    it = find(V.begin(), V.end() , j);
+    for (unsigned int i = 1; i < edge.size(); ++i)
+    {
+        std::cout << "( " << edge[i].tail << ", " << edge[i].head << ". " << edge[i].weight << ")" << endl;
+        distence += edge[i].weight;   
+    }
 
-    // found if it != V.end()
-    return ( if(it != V.end() ) );
+    std::cout << endl <<"Total weight = " << distence;
+
+    delete[] dist;
+    delete[] path;
+    delete[] done;
+
 }
 
 // Kruskal's minimum spanning tree algorithm
