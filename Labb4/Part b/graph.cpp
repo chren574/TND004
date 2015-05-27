@@ -77,8 +77,6 @@ void Graph::mstPrim() const
         done[i] = false;
     }
 
-    
-
     // Start position
     int current = 1;
 
@@ -115,12 +113,8 @@ void Graph::mstPrim() const
                 current = i;
             }
             
-        }
-
-    
+        }    
         if(smallest == INFINITY) { break; }
-
-
     }
 
     int distence = 0;
@@ -136,13 +130,48 @@ void Graph::mstPrim() const
     delete[] dist;
     delete[] path;
     delete[] done;
-
 }
 
 // Kruskal's minimum spanning tree algorithm
 void Graph::mstKruskal() const
-{
+{ 
     // *** TODO ***
+    Heap<Edge> H;
+    DSets D(size);
+
+    int totaldist = 0;
+
+    // Heapify
+    for(int i = 1; i <= size; i++)
+    {
+        Node* e = array[i].getFirst();
+
+        while(e->next)
+        {
+            // Checks if the are reverse - only join one time
+            if(e->vertex < i)
+            {
+                H.insert(Edge(e->vertex, i, e->weight) );
+                e = array[i].getNext();    
+            }
+            
+        }
+    }
+    int counter = 0;
+
+    while(counter < size -1)
+    {
+        Edge e = H.deleteMin();
+        if(D.find(e.head) != D.find(e.tail) )
+        {
+            D.join(D.find(e.head) , D.find(e.tail));
+            counter++;
+            totaldist += e.weight;
+            std::cout << e << endl;
+        }
+    }
+    std::cout << endl <<"Total weight = " << totaldist;
+
 }
 
 // print graph

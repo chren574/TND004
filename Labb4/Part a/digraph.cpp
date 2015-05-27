@@ -105,7 +105,6 @@ void Digraph::uwsssp(int s)
             next = array[v].getNext();
         }
     }
-
 }
 
 // positive weighted single source shortest pats
@@ -160,10 +159,8 @@ void Digraph::pwsssp(int s)
             }
             
         }
-
         if(smallest == INFINITY) { break; }
     }
-
 }
 
 // print graph

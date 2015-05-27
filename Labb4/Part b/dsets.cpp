@@ -53,10 +53,22 @@ void DSets::join(int r, int s)
     assert(array[s] < 0);
 
     // simple union
-    array[r]  = s;
+    //array[r]  = s;
 
     // *** TODO ***
     // weighted union (by size)
+
+    if(array[r] < array[s])
+    {
+        array[r] = array[r] + array[s];
+        array[s] = r;
+    }
+    else
+    {
+        array[s] = array[r] + array[s];
+        array[s] = r;
+    }
+
 }
 
 // return name of current set for x
@@ -64,7 +76,7 @@ void DSets::join(int r, int s)
 int DSets::find(int x)
 {
     assert(x >= 1 && x <= size);
-
+/*
     // simple find
     if (array[x] < 0)
     {
@@ -74,9 +86,18 @@ int DSets::find(int x)
     {
         return find(array[x]);
     }
-
+*/
     // *** TODO ***
     // find with path compression
+
+    if(array[x] < 0)
+    {
+        return x;
+    }
+    else
+    {
+        return array[x] = find(array[x]);
+    }
 }
 
 // just in case ...
