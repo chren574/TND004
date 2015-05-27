@@ -208,36 +208,35 @@ void Digraph::printPath(int t) const
     }
 
     // *** TODO ***
-
+/*
     // recussiv
     if(path[t] != 0)
     {
         printPath(path[t]);
     }
 
-    std::cout << t << setw(3); 
+    std::cout << t << setw(3) << "dist: " << dist[t] << setw(3); 
 
-    // Hur får ut distansen rekusivt?
+    // Hur får ut distansen rekusivt?  
+*/
 
     // Iterativ
-    /*
     std::vector<int> v;
-    vector<int>::iterator it;
-    int distance = 0;
+    vector<int>::reverse_iterator it;
+    int distance = dist[t];
 
     while(path[t] != 0)
     {
-        v.insert(it, path[t]);
-        distance += dist[t];
-        t++;
-        std::cout << "loop" << endl;
+        v.push_back(t);
+        t = path[t];
     }
-    std::cout << "loooo" << endl;
-    for(it = v.begin(); it != v.end(); it++)
+    v.push_back(t);
+
+    for(it = v.rbegin(); it != v.rend(); it++)
     {
         std::cout << *it << setw(3);
     }
 
     std::cout << "(" << distance << ")" << endl;
-    */
+    
 }
